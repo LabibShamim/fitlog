@@ -8,7 +8,6 @@ export const metadata = {
   title: "FitLog — Workout Library",
   description: "Train with intent. Log every set."
 };
-
 const RootLayout = ({ children }) => {
   return (
     <html className="scroll-smooth">
