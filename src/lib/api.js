@@ -7,7 +7,7 @@ export const getWorkouts = async () => {
 };
 
 export const getWorkout = async (id) => {
-  const response = await fetch(`${API_URL}/${id}`, { cache: "no-store" });
+  const response = await fetch(`${API_URL}/${id}`,{ cache:"no-store" });
   if (!response.ok) return null;
   return response.json();
 };
