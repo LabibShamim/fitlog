@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useFitLog } from "../context/FitLogContext";
 
 const PlanCard = ({ workout, savedMode = false }) => {
@@ -10,7 +11,7 @@ const PlanCard = ({ workout, savedMode = false }) => {
 
   return (
     <article className="flex flex-col gap-4 rounded-2xl border border-[#282c24] bg-[#11130f] p-4 sm:flex-row sm:items-center">
-      <img src={workout.image} alt={workout.name} className="h-24 w-full rounded-xl object-cover sm:h-24 sm:w-32" />
+      <Image src={workout.image} alt={workout.name} width={128} height={96} className="h-24 w-full rounded-xl object-cover sm:h-24 sm:w-32" />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap gap-1.5">
           {workout.muscleGroups.map((group) => <div key={group} className="text-[10px] font-black uppercase text-[#ccff00]">{group}</div>)}
