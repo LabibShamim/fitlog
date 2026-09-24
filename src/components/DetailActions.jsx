@@ -24,5 +24,4 @@ const DetailActions = ({ workout }) => {
     </div>
   );
 };
-
 export default DetailActions;
