@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useFitLog } from "../context/FitLogContext";
+import Image from "next/image";
 import logo from "../assets/logo.png";
 
 const Navbar = () => {
@@ -15,8 +16,8 @@ const Navbar = () => {
 
       <nav className="mx-auto w-[calc(100%-32px)] max-w-[1180px] flex h-[86px] items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <img
-            src={logo.src}
+          <Image
+            src={logo}
             alt="FitLog logo"
             className="h-8 w-8 object-contain"
           />
