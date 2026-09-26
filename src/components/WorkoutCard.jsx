@@ -1,90 +1,51 @@
-"use client";
-
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePlan } from "@/context/PlanContext";
-import { FiPlus, FiBookmark, FiClock, FiActivity, FiStar } from "react-icons/fi";
 
-export default function WorkoutCard({ workout }) {
-  const { addToPlan, saveForLater } = usePlan();
-
+const WorkoutCard = ({ workout }) => {
   return (
-    <div className="bg-[#15191f] border border-white/10 rounded-xl overflow-hidden shadow-lg hover:border-[#ccff00]/40 transition-all duration-300">
-      <Link href={`/workout/${workout.id}`}>
-        <div className="relative h-52 w-full overflow-hidden bg-[#0e1117]">
-          <Image
-            src={workout.image}
-            alt={workout.name}
-            fill
-            className="object-cover hover:scale-105 transition-transform duration-500"
-          />
-        </div>
-      </Link>
+    <Link
+      href={`/workout/${workout.id}`}
+      className="group block overflow-hidden rounded-2xl border border-[#282c24] bg-[#11130f] transition hover:-translate-y-1 hover:border-[#ccff00]/60"
+    >
+      <div className="relative flex h-52 items-center justify-center overflow-hidden bg-[#171a14]">
+        <Image
+          src={workout.image}
+          alt={workout.name}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition duration-500 group-hover:scale-105"
+        />
 
-      <div className="p-5">
-        <div className="flex flex-wrap gap-2 mb-3">
-          {workout.muscleGroups?.map((group) => (
-            <span
+        <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+          {workout.muscleGroups.map((group) => (
+            <div
               key={group}
-              className="text-xs font-bold uppercase px-2.5 py-1 rounded-full bg-[#ccff00]/10 text-[#ccff00]"
+              className="rounded-full bg-[#090a08]/85 px-2.5 py-1 text-[10px] font-black uppercase text-[#ccff00]"
             >
               {group}
-            </span>
+            </div>
           ))}
         </div>
+      </div>
 
-        <Link href={`/workout/${workout.id}`}>
-          <h2 className="text-xl font-bold text-white uppercase hover:text-[#ccff00] transition-colors">
-            {workout.name}
-          </h2>
-        </Link>
+      <div className="p-4">
+        <h3 className="font-[Impact,Haettenschweiler,'Arial_Narrow_Bold',sans-serif] text-xl uppercase leading-none">
+          {workout.name}
+        </h3>
 
-        <p className="text-sm text-slate-400 mt-2">
+        <p className="mt-2 text-sm text-[#92978b]">
           {workout.equipment}
         </p>
 
-        <div className="flex flex-wrap items-center gap-4 mt-5 text-sm text-slate-300">
-          <div className="flex items-center gap-1.5">
-            <FiClock className="text-[#ccff00]" />
-            <span>{workout.duration} min</span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <FiActivity className="text-[#ccff00]" />
-            <span>{workout.caloriesBurned} kcal</span>
-          </div>
-
-          <div className="flex items-center gap-1.5">
-            <FiStar className="text-[#ccff00]" />
-            <span>{workout.rating}</span>
-          </div>
+        <div className="mt-5 grid grid-cols-3 border-t border-[#292d24] pt-3 text-xs text-[#a2a69c]">
+          <div>⏱ {workout.duration} min</div>
+          <div>🔥 {workout.caloriesBurned} kcal</div>
+          <div>★ {workout.rating}</div>
         </div>
-
-        <div className="flex gap-2 mt-5">
-          <button
-            onClick={() => addToPlan(workout)}
-            className="flex-1 flex items-center justify-center gap-2 bg-[#ccff00] text-black font-bold text-sm rounded-lg px-3 py-2.5 hover:bg-[#d9ff4d] transition-colors"
-          >
-            <FiPlus />
-            Add to Plan
-          </button>
-
-          <button
-            onClick={() => saveForLater(workout)}
-            className="border border-white/20 text-white rounded-lg px-3 py-2.5 hover:border-[#ccff00] hover:text-[#ccff00] transition-colors"
-            title="Save for Later"
-          >
-            <FiBookmark />
-          </button>
-        </div>
-
-        <Link
-          href={`/workout/${workout.id}`}
-          className="flex items-center justify-center w-full mt-3 border border-white/10 text-slate-300 rounded-lg py-2.5 text-sm hover:bg-white/5 hover:text-white transition-colors"
-        >
-          View Details
-        </Link>
       </div>
-    </div>
+    </Link>
   );
-}
+};
+
+export default WorkoutCard;

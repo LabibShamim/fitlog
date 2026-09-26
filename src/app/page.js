@@ -1,122 +1,99 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import HeroSection from "@/components/HeroSection";
-import WorkoutGrid from "@/components/WorkoutGrid";
+import WorkoutList from "../components/WorkoutList";
+import Loading from "../components/Loading";
+import { getWorkouts } from "../lib/api";
+import banner from "../assets/banner.png";
+import Image from "next/image";
 
-export default function Home() {
+const HomePage = () => {
   const [workouts, setWorkouts] = useState([]);
-  const [sortBy, setSortBy] = useState("duration");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const getWorkouts = async () => {
-      try {
-        const response = await fetch(
-          "https://api.abcz.workers.dev/api/fitlog"
-        );
+    let active = true;
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch workouts");
+    getWorkouts()
+      .then((data) => {
+        if (active) setWorkouts(data);
+      })
+      .catch(() => {
+        if (active) {
+          setError("Could not load the workout library. Please refresh and try again.");
         }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
 
-        const data = await response.json();
-
-        setWorkouts(data);
-      } catch (error) {
-        setError("Failed to load workouts. Please try again.");
-      } finally {
-        setLoading(false);
-      }
+    return () => {
+      active = false;
     };
-
-    getWorkouts();
   }, []);
 
-  const sortedWorkouts = [...workouts].sort((a, b) => {
-    if (sortBy === "duration") {
-      return a.duration - b.duration;
-    }
-
-    if (sortBy === "calories") {
-      return a.caloriesBurned - b.caloriesBurned;
-    }
-
-    if (sortBy === "rating") {
-      return b.rating - a.rating;
-    }
-
-    return 0;
-  });
-
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <HeroSection />
-
-      <section id="library" className="py-10 sm:py-14">
-        <div className="mb-8">
-          <p className="text-[#ccff00] text-sm font-bold tracking-widest uppercase mb-2">
+    <div>
+      <section className="mx-auto mt-[110px] grid w-[calc(100%-32px)] max-w-[1180px] overflow-hidden rounded-[14px] border border-[#242832] bg-[#15171d] px-8 py-10 sm:px-10 lg:min-h-[337px] lg:grid-cols-[1fr_420px] lg:items-center lg:px-11 lg:py-8">
+        <div className="relative z-10 max-w-[620px]">
+          <p className="mb-4 text-[11px] font-black uppercase tracking-[0.18em] text-[#ccff00]">
             WORKOUT LIBRARY
           </p>
 
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-wide">
-                THE LIBRARY
-              </h2>
+          <h1 className="max-w-[610px] font-[Impact,Haettenschweiler,'Arial_Narrow_Bold',sans-serif] text-[44px] font-black uppercase leading-[0.94] tracking-[0.01em] text-[#f5f5f5] sm:text-[54px] lg:text-[50px] xl:text-[56px]">
+            TRAIN WITH INTENT. LOG EVERY SET.
+          </h1>
 
-              <p className="text-slate-400 mt-2">
-                Twelve lifts covering every major muscle group.
-              </p>
-            </div>
+          <p className="mt-5 max-w-[510px] text-[14px] leading-6 text-[#969ba5] sm:text-[15px]">
+            FitLog is a dark, no-nonsense gym companion: pick a lift, lock it
+            into today&apos;s plan, and watch the week&apos;s work add up.
+          </p>
 
-            <div className="flex items-center gap-3">
-              <label
-                htmlFor="sort"
-                className="text-sm text-slate-400 font-medium"
-              >
-                Sort By
-              </label>
+          <a
+            href="#library"
+            className="mt-6 inline-flex items-center justify-center rounded-[5px] bg-[#ccff00] px-5 py-3 text-[11px] font-black uppercase tracking-wide text-black transition hover:bg-[#d8ff33]"
+          >
+            BROWSE WORKOUTS
+          </a>
+        </div>
 
-              <select
-                id="sort"
-                value={sortBy}
-                onChange={(event) => setSortBy(event.target.value)}
-                className="bg-[#0b0d0f] border border-white/10 rounded-lg px-4 py-2 text-sm text-white outline-none"
-              >
-                <option value="duration">Duration</option>
-                <option value="calories">Calories</option>
-                <option value="rating">Rating</option>
-              </select>
-            </div>
+        <div className="relative flex h-[260px] items-center justify-center lg:h-full">
+          <Image
+            src={banner}
+            alt="Workout illustration"
+            width={330}
+            height={310}
+            className="h-full max-h-[285px] w-full max-w-[330px] object-contain object-center lg:max-h-[310px]"
+           />
+        </div>
+      </section>
+
+      <section
+        id="library"
+        className="mx-auto w-[calc(100%-32px)] max-w-[1180px] scroll-mt-8 py-12 lg:py-14"
+      >
+        <div className="mb-9 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <h2 className="mt-2 font-[Impact,Haettenschweiler,'Arial_Narrow_Bold',sans-serif] text-4xl uppercase leading-none tracking-[0.02em] text-[#f2f3ec] sm:text-6xl">
+              THE LIBRARY
+            </h2>
+            <p className="mt-2 text-[#858a7e]">
+              Twelve lifts covering every major muscle group.
+            </p>
           </div>
         </div>
 
-        {loading && (
-          <div className="min-h-[300px] flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-10 h-10 border-4 border-white/20 border-t-[#ccff00] rounded-full animate-spin mx-auto mb-4"></div>
-
-              <p className="text-slate-400">
-                Loading workouts...
-              </p>
-            </div>
+        {loading && <Loading />}
+        {error && (
+          <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-6 text-sm text-red-200">
+            {error}
           </div>
         )}
-
-        {!loading && error && (
-          <div className="min-h-[300px] flex items-center justify-center">
-            <p className="text-red-400 text-center">
-              {error}
-            </p>
-          </div>
-        )}
-
-        {!loading && !error && (
-          <WorkoutGrid workouts={sortedWorkouts} />
-        )}
+        {!loading && !error && <WorkoutList workouts={workouts} />}
       </section>
-    </main>
+    </div>
   );
-}
+};
+
+export default HomePage;

@@ -86,7 +86,7 @@ const WorkoutDetailsPage = async ({ params }) => {
                   className="flex gap-3 text-sm leading-6 text-[#a1a69a]"
                 >
                   <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#1b1e18] text-xs font-black text-[#ccff00]">
-                    {index+1}
+                    {index + 1}
                   </div>
 
                   <div>{step}</div>
