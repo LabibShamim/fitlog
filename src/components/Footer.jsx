@@ -1,19 +1,26 @@
-import React from "react";
-import logo from "../assets/logo.png";
 import Image from "next/image";
 
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="mt-10 border-t border-[#24271f] bg-[#050605]">
-      <div className="mx-auto w-[calc(100%-32px)] max-w-[1180px] flex min-h-28 flex-col items-start justify-between gap-5 py-8 sm:flex-row sm:items-center">
+    <footer className="bg-[#0b0d0f] border-t border-white/10 py-8 px-6 md:px-12">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <Image src={logo} alt="FitLog logo" className="h-7 w-7" />
-          <div className="font-[Impact,Haettenschweiler,'Arial_Narrow_Bold',sans-serif] text-lg">FITLOG</div>
+          <Image
+            src="/logo.png"
+            alt="FitLog Logo"
+            width={24}
+            height={24}
+          />
+
+          <span className="text-sm font-black tracking-wider text-white">
+            FITLOG
+          </span>
         </div>
-        <p className="text-xs text-[#777c70]">© 2026 FitLog — Workout Library. Train hard, log honest.</p>
+
+        <p className="text-xs text-slate-500 text-center">
+          © 2026 FitLog — Workout Library. Train hard, log honest.
+        </p>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

@@ -1,25 +1,29 @@
-import React from "react";
+import { Inter } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { PlanProvider } from "@/context/PlanContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import "./globals.css";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { FitLogProvider } from "../context/FitLogContext";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "FitLog — Workout Library",
-  description: "Train with intent. Log every set."
+  title: "FitLog - Workout Companion",
+  description: "Track your daily lifts and workout plans efficiently.",
 };
-const RootLayout = ({ children }) => {
+
+export default function RootLayout({ children }) {
   return (
-    <html className="scroll-smooth">
-      <body className="m-0 bg-[#090a08] font-sans text-[#f2f3ec]">
-        <FitLogProvider>
+    <html lang="en" className="dark">
+      <body className={`${inter.className} bg-[#0e1117] text-white min-h-screen flex flex-col`}>
+        <PlanProvider>
           <Navbar />
-          <main>{children}</main>
+          <main className="grow">{children}</main>
           <Footer />
-        </FitLogProvider>
+          <ToastContainer theme="dark" />
+        </PlanProvider>
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

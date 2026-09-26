@@ -1,82 +1,81 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useFitLog } from "../context/FitLogContext";
 import Image from "next/image";
-import logo from "../assets/logo.png";
+import { usePathname } from "next/navigation";
+import { usePlan } from "@/context/PlanContext";
 
-const Navbar = () => {
+export default function Navbar() {
   const pathname = usePathname();
-  const { plan, saved } = useFitLog();
+  const { planList, savedList } = usePlan();
+
+  const isActive = (path) => pathname === path;
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full border-b border-[#1d201b] bg-[#090a08]">
-
-      <nav className="mx-auto w-[calc(100%-32px)] max-w-[1180px] flex h-[86px] items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
+    <nav className="bg-[#0b0d0f] border-b border-white/10 px-4 sm:px-6 md:px-12 py-4 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
           <Image
-            src={logo}
-            alt="FitLog logo"
-            className="h-8 w-8 object-contain"
+            src="/logo.png"
+            alt="FitLog Logo"
+            width={28}
+            height={28}
+            className="object-contain"
           />
 
-          <div className="font-[Impact,Haettenschweiler,'Arial_Narrow_Bold',sans-serif] text-[20px] font-bold tracking-wide text-[#d9ddd2]">
+          <span className="text-lg font-black tracking-wider text-white uppercase">
             FITLOG
-          </div>
+          </span>
         </Link>
 
-        <div className="hidden items-center gap-1 rounded-[12px] bg-[#0d0f0c] p-1 md:flex">
+        <div className="flex items-center gap-2 sm:gap-6">
           <Link
-            href="/#library"
-            className={`rounded-[10px] px-4 py-2 text-sm font-bold transition ${
-              pathname === "/"
-                ? "bg-[#171a13] text-[#ccff00]"
-                : "text-[#92978b] hover:text-[#ccff00]"
+            href="/"
+            className={`text-xs sm:text-sm font-semibold transition-colors ${
+              isActive("/")
+                ? "bg-white/10 text-white px-3 py-1.5 rounded-full"
+                : "text-slate-400 hover:text-white"
             }`}
           >
-            Workouts
+            Workout
           </Link>
 
           <Link
             href="/my-plan"
-            className={`rounded-[10px] px-4 py-2 text-sm font-bold transition ${
-              pathname.startsWith("/my-plan")
-                ? "bg-[#171a13] text-[#ccff00]"
-                : "text-[#92978b] hover:text-[#ccff00]"
+            className={`text-xs sm:text-sm font-semibold transition-colors ${
+              isActive("/my-plan")
+                ? "bg-white/10 text-white px-3 py-1.5 rounded-full"
+                : "text-slate-400 hover:text-white"
             }`}
           >
             My Plan
           </Link>
-
         </div>
-        <div className="flex items-center gap-6">
+
+        <div className="flex items-center gap-2">
           <Link
             href="/my-plan"
-            className="flex items-center gap-2 text-sm font-bold text-[#c7cbc0]"
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-300 bg-white/5 hover:bg-white/10 px-2 sm:px-3 py-1.5 rounded-full border border-white/10 transition-colors"
           >
-            Plan
-            <div className="flex h-7 min-w-7 items-center justify-center rounded-full bg-[#ccff00] px-2 text-xs font-black text-black">
-              {plan.length}
-            </div>
+            <span className="hidden sm:inline">Plan</span>
+
+            <span className="bg-[#ccff00] text-black w-5 h-5 rounded-full flex items-center justify-center font-black text-[11px]">
+              {planList.length}
+            </span>
           </Link>
 
           <Link
             href="/my-plan"
-            className="flex items-center gap-2 text-sm font-bold text-[#c7cbc0]"
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-300 bg-white/5 hover:bg-white/10 px-2 sm:px-3 py-1.5 rounded-full border border-white/10 transition-colors"
           >
-            Saved
-            <div className="flex h-7 min-w-7 items-center justify-center rounded-full border border-[#686d62] px-2 text-xs font-bold text-[#d7dbd1]">
-              {saved.length}
-            </div>
+            <span className="hidden sm:inline">Saved</span>
+
+            <span className="bg-white/20 text-white w-5 h-5 rounded-full flex items-center justify-center font-black text-[11px]">
+              {savedList.length}
+            </span>
           </Link>
-
         </div>
-
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
-};
-
-export default Navbar;
+}
